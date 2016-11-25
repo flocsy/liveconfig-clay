@@ -1,12 +1,14 @@
+var package = require('../../package');
+var uuid = package.pebble.uuid;
 var liveconfig = require('./liveconfig');
 
 var Clay = require('pebble-clay');
 var clayConfig = require('./config.json');
 var customClay = require('./custom-clay');
-var clay = new Clay(clayConfig, customClay, {autoHandleEvents: false});
+var clay = new Clay(clayConfig, customClay, {autoHandleEvents: false, userData: {uuid: uuid}});
 
 Pebble.addEventListener('showConfiguration', function(e) {
-  liveconfig.connect(Pebble.getAccountToken(), function(id, value) {
+  liveconfig.connect(uuid, function(id, value) {
     var config = {};
     config[id] = value;
     console.log(JSON.stringify(config));

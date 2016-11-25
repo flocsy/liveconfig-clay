@@ -1,13 +1,13 @@
 module.exports = function(minified) {
-  var Clay = this;
+  var clayConfig = this;
   var _ = minified._;
   var $ = minified.$;
   var HTML = minified.HTML;
 
-  Clay.on(Clay.EVENTS.AFTER_BUILD, function() {
-    var connection = new WebSocket("wss://liveconfig.fletchto99.com/forward/" + Clay.meta.accountToken + "/" + Clay.meta.watchToken);
+  clayConfig.on(clayConfig.EVENTS.AFTER_BUILD, function() {
+    var connection = new WebSocket("wss://liveconfig.fletchto99.com/forward/" + clayConfig.meta.userData.uuid + "/" + clayConfig.meta.watchToken);
     connection.onopen = function() {
-      Clay.getAllItems().map( function(item) {
+      clayConfig.getAllItems().map( function(item) {
         item.on('change', function() {
           connection.send(JSON.stringify({id: this.messageKey, value: this.get()}));
         });
